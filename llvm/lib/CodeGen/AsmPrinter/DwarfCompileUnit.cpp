@@ -24,6 +24,7 @@
 #include "llvm/CodeGen/AsmPrinter.h"
 #include "llvm/CodeGen/DIE.h"
 #include "llvm/CodeGen/LexicalScopes.h"
+#include "llvm/CodeGen/MachineFrameInfo.h"
 #include "llvm/CodeGen/MachineFunction.h"
 #include "llvm/CodeGen/MachineInstr.h"
 #include "llvm/CodeGen/MachineOperand.h"
@@ -651,11 +652,17 @@ DIE *DwarfCompileUnit::constructVariableDIEImpl(const DbgVariable &DV,
   Optional<unsigned> NVPTXAddressSpace;
   DIELoc *Loc = new (DIEValueAllocator) DIELoc;
   DIEDwarfExpression DwarfExpr(*Asm, *this, *Loc);
+  int delta = 0;
+  if (Asm->MF->getSubtarget().getTargetTriple().isK1C()) {
+    MachineFrameInfo &MFI = Asm->MF->getFrameInfo();
+    delta = MFI.getStackSize();
+  }
   for (auto &Fragment : DV.getFrameIndexExprs()) {
     unsigned FrameReg = 0;
     const DIExpression *Expr = Fragment.Expr;
     const TargetFrameLowering *TFI = Asm->MF->getSubtarget().getFrameLowering();
-    int Offset = TFI->getFrameIndexReference(*Asm->MF, Fragment.FI, FrameReg);
+    int Offset =
+        TFI->getFrameIndexReference(*Asm->MF, Fragment.FI, FrameReg) - delta;
     DwarfExpr.addFragmentOffset(Expr);
     SmallVector<uint64_t, 8> Ops;
     Ops.push_back(dwarf::DW_OP_plus_uconst);
