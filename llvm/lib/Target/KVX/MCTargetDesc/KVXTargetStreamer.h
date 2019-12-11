@@ -21,5 +21,13 @@ public:
   KVXTargetStreamer(MCStreamer &S);
 };
 
+// This part is for ascii assembly output
+class KVXTargetAsmStreamer : public KVXTargetStreamer {
+  formatted_raw_ostream &OS;
+
+public:
+  KVXTargetAsmStreamer(MCStreamer &S, formatted_raw_ostream &OS);
+};
+
 } // namespace llvm
 #endif

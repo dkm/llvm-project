@@ -13,3 +13,8 @@
 using namespace llvm;
 
 KVXTargetStreamer::KVXTargetStreamer(MCStreamer &S) : MCTargetStreamer(S) {}
+
+// This part is for ascii assembly output
+KVXTargetAsmStreamer::KVXTargetAsmStreamer(MCStreamer &S,
+					   formatted_raw_ostream &OS)
+    : KVXTargetStreamer(S), OS(OS) {}
