@@ -72,6 +72,13 @@ static MCTargetStreamer *createK1CTargetStreamer(MCStreamer &S,
   return new K1CTargetStreamer(S);
 }
 
+static MCTargetStreamer *createK1CAsmTargetStreamer(MCStreamer &S,
+                                                      formatted_raw_ostream &OS,
+                                                      MCInstPrinter *InstPrint,
+                                                      bool isVerboseAsm) {
+  return new K1CTargetAsmStreamer(S, OS);
+}
+
 extern "C" void LLVMInitializeK1CTargetMC() {
   TargetRegistry::RegisterMCAsmInfo(getTheK1CTarget(), createK1CMCAsmInfo);
   TargetRegistry::RegisterMCInstrInfo(getTheK1CTarget(), createK1CMCInstrInfo);
@@ -79,10 +86,12 @@ extern "C" void LLVMInitializeK1CTargetMC() {
   TargetRegistry::RegisterMCInstPrinter(getTheK1CTarget(),
                                         createK1CMCInstPrinter);
   TargetRegistry::RegisterAsmTargetStreamer(getTheK1CTarget(),
-                                            createK1CTargetStreamer);
+					    createK1CAsmTargetStreamer);
   TargetRegistry::RegisterMCSubtargetInfo(getTheK1CTarget(),
                                           createK1CMCSubtargetInfo);
   TargetRegistry::RegisterMCAsmBackend(getTheK1CTarget(), createK1CAsmBackend);
   TargetRegistry::RegisterMCCodeEmitter(getTheK1CTarget(),
                                         createK1CMCCodeEmitter);
+  //   // Register the asm target streamer.
+  // TargetRegistry::RegisterAsmTargetStreamer(getTheK1CTarget(), createK1CAsmTargetStreamer);
 }
