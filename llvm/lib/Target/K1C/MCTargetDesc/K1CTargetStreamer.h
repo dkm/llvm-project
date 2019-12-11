@@ -21,5 +21,13 @@ public:
   K1CTargetStreamer(MCStreamer &S);
 };
 
+// This part is for ascii assembly output
+class K1CTargetAsmStreamer : public K1CTargetStreamer {
+  formatted_raw_ostream &OS;
+
+public:
+  K1CTargetAsmStreamer(MCStreamer &S, formatted_raw_ostream &OS);
+};
+
 } // namespace llvm
 #endif
