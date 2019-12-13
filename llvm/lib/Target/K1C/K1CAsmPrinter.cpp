@@ -42,8 +42,9 @@ void K1CAsmPrinter::EmitInstruction(const MachineInstr *MI) {
     LowerK1CMachineInstrToMCInst(MI, TmpInst, *this);
     EmitToStreamer(*OutStreamer, TmpInst);
   }
-
+if (OutStreamer->hasRawTextSupport()) {
   OutStreamer->EmitRawText(StringRef("\t;;\n"));
+}
 }
 
 bool K1CAsmPrinter::PrintAsmOperand(const MachineInstr *MI, unsigned OpNo,
