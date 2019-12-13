@@ -42,8 +42,9 @@ void KVXAsmPrinter::EmitInstruction(const MachineInstr *MI) {
     LowerKVXMachineInstrToMCInst(MI, TmpInst, *this);
     EmitToStreamer(*OutStreamer, TmpInst);
   }
-
+if (OutStreamer->hasRawTextSupport()) {
   OutStreamer->EmitRawText(StringRef("\t;;\n"));
+}
 }
 
 bool KVXAsmPrinter::PrintAsmOperand(const MachineInstr *MI, unsigned OpNo,
