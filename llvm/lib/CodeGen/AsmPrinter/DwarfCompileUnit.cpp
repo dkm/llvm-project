@@ -653,7 +653,7 @@ DIE *DwarfCompileUnit::constructVariableDIEImpl(const DbgVariable &DV,
   DIELoc *Loc = new (DIEValueAllocator) DIELoc;
   DIEDwarfExpression DwarfExpr(*Asm, *this, *Loc);
   int delta = 0;
-  if (Asm->MF->getSubtarget().getTargetTriple().isK1C()) {
+  if (Asm->MF->getSubtarget().getTargetTriple().isKVX()) {
     MachineFrameInfo &MFI = Asm->MF->getFrameInfo();
     delta = MFI.getStackSize();
   }
