@@ -73,13 +73,6 @@ static MCTargetStreamer *createKVXTargetStreamer(MCStreamer &S,
   return new KVXTargetStreamer(S);
 }
 
-static MCTargetStreamer *createKVXAsmTargetStreamer(MCStreamer &S,
-						    formatted_raw_ostream &OS,
-						    MCInstPrinter *InstPrint,
-						    bool isVerboseAsm) {
-  return new KVXTargetAsmStreamer(S, OS);
-}
-
 static StringRef DefaultArch = "kv3";
 static StringRef DefaultSubarch = "v1";
 StringRef KVX_MC::selectKVXCPU(StringRef CPU) {
@@ -95,7 +88,7 @@ extern "C" LLVM_EXTERNAL_VISIBILITY void LLVMInitializeKVXTargetMC() {
   TargetRegistry::RegisterMCInstPrinter(getTheKVXTarget(),
                                         createKVXMCInstPrinter);
   TargetRegistry::RegisterAsmTargetStreamer(getTheKVXTarget(),
-                                            createKVXAsmTargetStreamer);
+                                            createKVXTargetStreamer);
   TargetRegistry::RegisterMCSubtargetInfo(getTheKVXTarget(),
                                           createKVXMCSubtargetInfo);
   TargetRegistry::RegisterMCAsmBackend(getTheKVXTarget(), createKVXAsmBackend);
