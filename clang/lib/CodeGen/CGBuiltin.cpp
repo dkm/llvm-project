@@ -15407,6 +15407,9 @@ Value *CodeGenFunction::EmitKVXBuiltinExpr(unsigned BuiltinID,
   case KVX::BI__builtin_kvx_fmm212w:
     return KVX_emitBinaryRoundingBuiltin(*this, E, Intrinsic::kvx_fmm212w);
 
+  case KVX::BI__builtin_kvx_ffmaw:
+    return KVX_emitTernaryRoundingBuiltin(*this, E, Intrinsic::kvx_ffmaw);
+
   case KVX::BI__builtin_kvx_ffmawp:
     return KVX_emitTernaryRoundingBuiltin(*this, E, Intrinsic::kvx_ffmawp);
 
@@ -15418,6 +15421,9 @@ Value *CodeGenFunction::EmitKVXBuiltinExpr(unsigned BuiltinID,
 
   case KVX::BI__builtin_kvx_fmma212w:
     return KVX_emitTernaryRoundingBuiltin(*this, E, Intrinsic::kvx_fmma212w);
+
+  case KVX::BI__builtin_kvx_ffmsw:
+    return KVX_emitTernaryRoundingBuiltin(*this, E, Intrinsic::kvx_ffmsw);
 
   case KVX::BI__builtin_kvx_ffmswp:
     return KVX_emitTernaryRoundingBuiltin(*this, E, Intrinsic::kvx_ffmswp);
@@ -15454,6 +15460,9 @@ Value *CodeGenFunction::EmitKVXBuiltinExpr(unsigned BuiltinID,
 
   case KVX::BI__builtin_kvx_floatud:
     return KVX_emitUnaryRoundingBuiltin(*this, E, Intrinsic::kvx_floatud);
+
+  case KVX::BI__builtin_kvx_finvw:
+    return KVX_emitUnaryRoundingBuiltin(*this, E, Intrinsic::kvx_finvw);
   }
   return nullptr;
 }
