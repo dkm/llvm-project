@@ -655,17 +655,11 @@ DIE *DwarfCompileUnit::constructVariableDIEImpl(const DbgVariable &DV,
   Optional<unsigned> NVPTXAddressSpace;
   DIELoc *Loc = new (DIEValueAllocator) DIELoc;
   DIEDwarfExpression DwarfExpr(*Asm, *this, *Loc);
-  int delta = 0;
-  if (Asm->MF->getSubtarget().getTargetTriple().isKVX()) {
-    MachineFrameInfo &MFI = Asm->MF->getFrameInfo();
-    delta = MFI.getStackSize();
-  }
   for (auto &Fragment : DV.getFrameIndexExprs()) {
     unsigned FrameReg = 0;
     const DIExpression *Expr = Fragment.Expr;
     const TargetFrameLowering *TFI = Asm->MF->getSubtarget().getFrameLowering();
-    int Offset =
-        TFI->getFrameIndexReference(*Asm->MF, Fragment.FI, FrameReg) - delta;
+    int Offset = TFI->getFrameIndexReference(*Asm->MF, Fragment.FI, FrameReg);
     DwarfExpr.addFragmentOffset(Expr);
     SmallVector<uint64_t, 8> Ops;
     DIExpression::appendOffset(Ops, Offset);
